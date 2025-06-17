@@ -84,7 +84,6 @@ Each example in this repository comes with its own instructions. Here's how to r
 
 1. **Interactive Hello World**
    ```bash
-   cd AI_Native_Journey
    python hello_world.py
    ```
    This script demonstrates:
@@ -100,9 +99,12 @@ Each example in this repository comes with its own instructions. Here's how to r
 ## Project Structure
 
 ```
-AI_Native_Journey/
+/
 ├── hello_world.py      # Interactive greeting example with error handling
-└── [Future Projects]  # More examples and experiments to come
+├── index.html         # Web interface
+├── LICENSE           # MIT License file
+├── .gitignore       # Git ignore rules
+└── README.md        # This documentation file
 ```
 
 ---
