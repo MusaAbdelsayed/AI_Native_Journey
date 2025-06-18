@@ -21,12 +21,19 @@ def get_user_name() -> str:
             print("Please try again.")
 
 def print_welcome(name: str) -> None:
-    print(f"\nWelcome {name} to Python Programming!")
-    print("This is a simple welcome message script.")
-    print(f"Hello {name}, we're glad to have you here!")
+    if name == "Musa":
+        print("\nHey, it's the awesome AI Director! Welcome back!")
+        print("We're thrilled to have you here!")
+    else:
+        print(f"\nWelcome {name} to Python Programming!")
+        print("This is a simple welcome message script.")
+        print(f"Hello {name}, we're glad to have you here!")
 
 def print_greeting(name: str) -> None:
-    print(f"Hello, {name}! Welcome to the program!")
+    if name == "Musa":
+        print("Hello, Awesome AI Director! Your presence makes this program special!")
+    else:
+        print(f"Hello, {name}! Welcome to the program!")
 
 def main() -> None:
     try:
