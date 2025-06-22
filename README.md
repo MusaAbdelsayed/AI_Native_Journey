@@ -93,6 +93,18 @@ Each example in this repository comes with its own instructions. Here's how to r
    - Type hints and documentation
    - String formatting
    - Python module structure
+   - Conditional logic and personalization
+
+2. **Simple Command-Line Calculator**
+   ```bash
+   python calculator.py
+   ```
+   This calculator demonstrates:
+   - Basic arithmetic operations (+, -, *, /, %, **)
+   - Input validation and error handling
+   - Division by zero protection
+   - Color-coded interface
+   - Professional code structure
 
 ---
 
@@ -100,8 +112,10 @@ Each example in this repository comes with its own instructions. Here's how to r
 
 ```
 /
-├── hello_world.py      # Interactive greeting example with error handling
-├── index.html         # Web interface
+├── hello_world.py      # Enhanced interactive greeting with personalization
+├── calculator.py       # Simple command-line calculator
+├── calculator.html     # Web calculator interface
+├── index.html         # Web greeting interface
 ├── LICENSE           # MIT License file
 ├── .gitignore       # Git ignore rules
 └── README.md        # This documentation file
@@ -121,30 +135,89 @@ A robust Python script that demonstrates modern Python practices:
 - **Type Hints:** Proper type annotations for better code clarity
 - **Documentation:** Comprehensive docstrings for all functions
 - **Modular Design:** Well-organized functions with single responsibilities
+- **Conditional Logic:** Special welcome messages for specific users
+- **Color Output:** Enhanced visual presentation
 
 #### Functions
 - `get_user_name()`: Handles user input with validation
-- `print_welcome()`: Displays welcome message
+- `print_welcome()`: Displays personalized welcome message
 - `print_greeting()`: Shows personalized greeting
 - `main()`: Orchestrates program flow with error handling
 
 #### Usage
 ```bash
-cd AI_Native_Journey
 python hello_world.py
 ```
 
 #### Example Output
 ```
 Please enter your name: Musa
-Welcome Musa to Python Programming!
-This is a simple welcome message script.
-Hello Musa, we're glad to have you here!
+Hey, it's the awesome AI Director! Welcome back!
+We're thrilled to have you here!
 
 ==================================================
 
-Hello, Musa! Welcome to the program!
+Hello, Awesome AI Director! Your presence makes this program special!
 ```
+
+### Simple Command-Line Calculator (`calculator.py`)
+
+A professional calculator with comprehensive error handling:
+
+#### Features
+- **Six Operations:** Addition, subtraction, multiplication, division, modulo, power
+- **Input Validation:** Ensures valid numeric input
+- **Error Handling:** Division by zero protection and exception management
+- **Color Interface:** Professional color-coded output
+- **Type Hints:** Modern Python type annotations
+- **Modular Design:** Clean separation of concerns
+
+#### Functions
+- `get_number()`: Validates and returns user input
+- `get_operation()`: Handles operation selection
+- `calculate()`: Performs arithmetic operations
+- `print_result()`: Displays formatted results
+- `main()`: Orchestrates calculator flow
+
+#### Usage
+```bash
+python calculator.py
+```
+
+#### Example Output
+```
+==================================================
+Simple Command-Line Calculator
+Basic Arithmetic Operations
+==================================================
+
+Available Operations:
+  1. ➕ Addition (+)
+  2. ➖ Subtraction (-)
+  3. ✖️  Multiplication (*)
+  4. ➗ Division (/)
+  5. 📊 Modulo (%)
+  6. 💪 Power (**)
+  7. 🔢 Exit (q)
+
+Enter first number: 10
+Choose operation (1-7): 1
+Enter second number: 5
+
+========================================
+Calculation Result:
+10.0 + 5.0 = 15.0
+========================================
+```
+
+### Web Interfaces
+
+Both projects include modern HTML interfaces:
+
+- **`index.html`**: Interactive web version of the greeting system
+- **`calculator.html`**: Web calculator with real-time calculations
+
+Open these files in any web browser to experience the web versions of the applications.
 
 ---
 
