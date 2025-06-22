@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator - AI Native Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .title {
+            font-size: 2.2em;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #718096;
+            margin-bottom: 15px;
+        }
+
+        .emoji {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+
+        .calculator {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .number-input {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 120px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .number-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .operation-select {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .operation-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .calculate-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculate-btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .result {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 80px;
+            border-left: 4px solid #667eea;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result.success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border-left-color: #48bb78;
+        }
+
+        .result.error {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            border-left-color: #f56565;
+        }
+
+        .quick-calc {
+            margin-top: 20px;
+        }
+
+        .quick-calc h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quick-btn {
+            padding: 10px;
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .quick-btn:hover {
+            background: #cbd5e0;
+            transform: translateY(-1px);
+        }
+
+        .features {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .features h3 {
+            color: #4a5568;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 6px 0;
+            color: #718096;
+            position: relative;
+            padding-left: 25px;
+            font-size: 14px;
+        }
+
+        .feature-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+        }
+
+        .footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .github-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .github-link:hover {
+            text-decoration: underline;
+        }
+
+        .clear-btn {
+            padding: 8px 15px;
+            background: #f56565;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .clear-btn:hover {
+            background: #e53e3e;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">🧮✨</div>
+            <h1 class="title">Simple Calculator</h1>
+            <p class="subtitle">Basic Arithmetic Operations</p>
+        </div>
+
+        <div class="calculator">
+            <div class="input-group">
+                <input type="number" id="num1" class="number-input" placeholder="First number" step="any">
+                <select id="operation" class="operation-select">
+                    <option value="">Choose operation</option>
+                    <option value="+">➕ Addition (+)</option>
+                    <option value="-">➖ Subtraction (-)</option>
+                    <option value="*">✖️ Multiplication (*)</option>
+                    <option value="/">➗ Division (/)</option>
+                    <option value="%">📊 Modulo (%)</option>
+                    <option value="**">💪 Power (**)</option>
+                </select>
+                <input type="number" id="num2" class="number-input" placeholder="Second number" step="any">
+            </div>
+
+            <button id="calculateBtn" class="calculate-btn" onclick="calculate()">Calculate 🚀</button>
+            <button class="clear-btn" onclick="clearCalculator()">Clear</button>
+
+            <div id="result" class="result">
+                Enter numbers and choose an operation to calculate
+            </div>
+
+            <div class="quick-calc">
+                <h3>🎯 Quick Calculations</h3>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="quickCalc(10, '+', 5)">10 + 5</button>
+                    <button class="quick-btn" onclick="quickCalc(20, '-', 8)">20 - 8</button>
+                    <button class="quick-btn" onclick="quickCalc(6, '*', 7)">6 × 7</button>
+                    <button class="quick-btn" onclick="quickCalc(100, '/', 4)">100 ÷ 4</button>
+                    <button class="quick-btn" onclick="quickCalc(17, '%', 5)">17 % 5</button>
+                    <button class="quick-btn" onclick="quickCalc(2, '**', 8)">2^8</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>🎯 Calculator Features</h3>
+            <ul class="feature-list">
+                <li>Basic arithmetic operations (+, -, *, /, %, **)</li>
+                <li>Input validation and error handling</li>
+                <li>Division by zero protection</li>
+                <li>Clean, modern interface</li>
+                <li>Quick calculation examples</li>
+                <li>Professional code structure</li>
+                <li>Real-time calculations</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>View the Python implementation on 
+                <a href="https://github.com/MusaAbdelsayed/AI_Native_Journey" class="github-link" target="_blank">GitHub</a>
+            </p>
+            <p>Built with ❤️ for AI Native Development</p>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const operation = document.getElementById('operation').value;
+            const resultDiv = document.getElementById('result');
+
+            // Validate inputs
+            if (isNaN(num1) || isNaN(num2)) {
+                resultDiv.textContent = 'Error: Please enter valid numbers';
+                resultDiv.className = 'result error';
+                return;
+            }
+
+            if (!operation) {
+                resultDiv.textContent = 'Error: Please choose an operation';
+                resultDiv.className = 'result error';
+                return;
+            }
+
+            let result;
+            let success = true;
+            let errorMessage = '';
+
+            try {
+                switch (operation) {
+                    case '+':
+                        result = num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        break;
+                    case '/':
+                        if (num2 === 0) {
+                            throw new Error('Division by zero is not allowed!');
+                        }
+                        result = num1 / num2;
+                        break;
+                    case '%':
+                        if (num2 === 0) {
+                            throw new Error('Modulo by zero is not allowed!');
+                        }
+                        result = num1 % num2;
+                        break;
+                    case '**':
+                        result = Math.pow(num1, num2);
+                        break;
+                    default:
+                        throw new Error('Unknown operation');
+                }
+
+                // Format result
+                const formattedResult = Number.isInteger(result) ? result : result.toFixed(4);
+                resultDiv.textContent = `${num1} ${operation} ${num2} = ${formattedResult}`;
+                resultDiv.className = 'result success';
+
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        function quickCalc(num1, operation, num2) {
+            document.getElementById('num1').value = num1;
+            document.getElementById('num2').value = num2;
+            document.getElementById('operation').value = operation;
+            calculate();
+        }
+
+        function clearCalculator() {
+            document.getElementById('num1').value = '';
+            document.getElementById('num2').value = '';
+            document.getElementById('operation').value = '';
+            document.getElementById('result').textContent = 'Enter numbers and choose an operation to calculate';
+            document.getElementById('result').className = 'result';
+        }
+
+        // Allow Enter key to calculate
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 0.6s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html> 
