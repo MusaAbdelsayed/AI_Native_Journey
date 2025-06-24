@@ -451,6 +451,7 @@
                 <li>Real-time calculations</li>
                 <li>Calculation history tracking</li>
                 <li>Session statistics and summary</li>
+                <li>Automatic comma removal for large numbers</li>
             </ul>
         </div>
 
@@ -553,8 +554,11 @@
         }
 
         function calculate() {
-            const num1 = parseFloat(document.getElementById('num1').value);
-            const num2 = parseFloat(document.getElementById('num2').value);
+            // Get input values and remove commas for better user experience
+            const num1Input = document.getElementById('num1').value.replace(/,/g, '');
+            const num2Input = document.getElementById('num2').value.replace(/,/g, '');
+            const num1 = parseFloat(num1Input);
+            const num2 = parseFloat(num2Input);
             const operation = document.getElementById('operation').value;
             const resultDiv = document.getElementById('result');
 

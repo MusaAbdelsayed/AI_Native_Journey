@@ -52,7 +52,7 @@ def print_operations() -> None:
     print()
 
 def get_number(prompt: str) -> Union[float, None]:
-    """Get and validate a number from user input."""
+    """Get and validate a number from user input with automatic comma removal."""
     while True:
         try:
             print(f"{Colors.CYAN}{prompt}{Colors.END}", end="")
@@ -60,6 +60,9 @@ def get_number(prompt: str) -> Union[float, None]:
             
             if user_input == 'q':
                 return None
+            
+            # Remove commas from the input for better user experience
+            user_input = user_input.replace(',', '')
                 
             number = float(user_input)
             return number
@@ -209,7 +212,8 @@ def print_features() -> None:
         "✅ Professional code structure",
         "✅ Type hints and documentation",
         "✅ Calculation history tracking",
-        "✅ Session statistics and summary"
+        "✅ Session statistics and summary",
+        "✅ Automatic comma removal for large numbers"
     ]
     
     print(f"{Colors.BOLD}{Colors.HEADER}Calculator Features:{Colors.END}")
