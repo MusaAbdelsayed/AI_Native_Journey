@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Calculator - AI Native Journey</title>
+    <title>Enhanced Calculator - AI Native Journey</title>
     <style>
         * {
             margin: 0;
@@ -26,7 +26,7 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
             text-align: center;
             backdrop-filter: blur(10px);
@@ -162,6 +162,73 @@
             border-left-color: #f56565;
         }
 
+        .history-section {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-title {
+            color: #4a5568;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .history-btn {
+            padding: 8px 15px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .history-btn:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+        }
+
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .history-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item.success {
+            color: #38a169;
+        }
+
+        .history-item.error {
+            color: #e53e3e;
+        }
+
+        .history-timestamp {
+            color: #718096;
+            font-size: 12px;
+        }
+
         .quick-calc {
             margin-top: 20px;
         }
@@ -262,14 +329,48 @@
             background: #e53e3e;
             transform: translateY(-1px);
         }
+
+        .stats-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #718096;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="emoji">🧮✨</div>
-            <h1 class="title">Simple Calculator</h1>
-            <p class="subtitle">Basic Arithmetic Operations</p>
+            <h1 class="title">Enhanced Calculator</h1>
+            <p class="subtitle">Basic Arithmetic Operations with History</p>
         </div>
 
         <div class="calculator">
@@ -292,6 +393,37 @@
 
             <div id="result" class="result">
                 Enter numbers and choose an operation to calculate
+            </div>
+
+            <div class="history-section">
+                <div class="history-header">
+                    <h3 class="history-title">📋 Calculation History</h3>
+                    <button class="history-btn" onclick="toggleHistory()">Show/Hide</button>
+                </div>
+                <div id="historyList" class="history-list" style="display: none;">
+                    <div id="historyContent">No calculations yet</div>
+                </div>
+                <div id="statsSection" class="stats-section" style="display: none;">
+                    <h4 style="margin-bottom: 10px; color: #4a5568;">📊 Session Statistics</h4>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div id="totalCalcs" class="stat-number">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div id="successCalcs" class="stat-number">0</div>
+                            <div class="stat-label">Successful</div>
+                        </div>
+                        <div class="stat-item">
+                            <div id="failedCalcs" class="stat-number">0</div>
+                            <div class="stat-label">Failed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div id="mostUsedOp" class="stat-number">-</div>
+                            <div class="stat-label">Most Used</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="quick-calc">
@@ -317,6 +449,8 @@
                 <li>Quick calculation examples</li>
                 <li>Professional code structure</li>
                 <li>Real-time calculations</li>
+                <li>Calculation history tracking</li>
+                <li>Session statistics and summary</li>
             </ul>
         </div>
 
@@ -329,6 +463,95 @@
     </div>
 
     <script>
+        // Global variables for history tracking
+        let calculationHistory = [];
+        let historyVisible = false;
+        let statsVisible = false;
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleString();
+        }
+
+        function addToHistory(num1, operation, num2, result, success) {
+            const calculationRecord = {
+                timestamp: getCurrentTime(),
+                num1: num1,
+                operation: operation,
+                num2: num2,
+                result: result,
+                success: success
+            };
+            calculationHistory.push(calculationRecord);
+            updateHistoryDisplay();
+            updateStatistics();
+        }
+
+        function updateHistoryDisplay() {
+            const historyContent = document.getElementById('historyContent');
+            
+            if (calculationHistory.length === 0) {
+                historyContent.innerHTML = '<div style="color: #718096; text-align: center;">No calculations yet</div>';
+                return;
+            }
+
+            let historyHTML = '';
+            calculationHistory.forEach((calc, index) => {
+                const itemClass = calc.success ? 'history-item success' : 'history-item error';
+                const resultText = calc.success ? `= ${calc.result}` : `= ${calc.result}`;
+                
+                historyHTML += `
+                    <div class="${itemClass}">
+                        <div class="history-timestamp">${calc.timestamp}</div>
+                        <div>${index + 1}. ${calc.num1} ${calc.operation} ${calc.num2} ${resultText}</div>
+                    </div>
+                `;
+            });
+            
+            historyContent.innerHTML = historyHTML;
+        }
+
+        function updateStatistics() {
+            const totalCalcs = calculationHistory.length;
+            const successfulCalcs = calculationHistory.filter(calc => calc.success).length;
+            const failedCalcs = totalCalcs - successfulCalcs;
+            
+            // Find most used operation
+            let mostUsedOp = '-';
+            if (successfulCalcs > 0) {
+                const operations = calculationHistory.filter(calc => calc.success).map(calc => calc.operation);
+                const operationCounts = {};
+                operations.forEach(op => {
+                    operationCounts[op] = (operationCounts[op] || 0) + 1;
+                });
+                mostUsedOp = Object.keys(operationCounts).reduce((a, b) => 
+                    operationCounts[a] > operationCounts[b] ? a : b
+                );
+            }
+
+            document.getElementById('totalCalcs').textContent = totalCalcs;
+            document.getElementById('successCalcs').textContent = successfulCalcs;
+            document.getElementById('failedCalcs').textContent = failedCalcs;
+            document.getElementById('mostUsedOp').textContent = mostUsedOp;
+        }
+
+        function toggleHistory() {
+            const historyList = document.getElementById('historyList');
+            const statsSection = document.getElementById('statsSection');
+            
+            if (!historyVisible) {
+                historyList.style.display = 'block';
+                statsSection.style.display = 'block';
+                historyVisible = true;
+                statsVisible = true;
+            } else {
+                historyList.style.display = 'none';
+                statsSection.style.display = 'none';
+                historyVisible = false;
+                statsVisible = false;
+            }
+        }
+
         function calculate() {
             const num1 = parseFloat(document.getElementById('num1').value);
             const num2 = parseFloat(document.getElementById('num2').value);
@@ -339,12 +562,14 @@
             if (isNaN(num1) || isNaN(num2)) {
                 resultDiv.textContent = 'Error: Please enter valid numbers';
                 resultDiv.className = 'result error';
+                addToHistory(num1 || 0, operation || '?', num2 || 0, 'Error: Invalid numbers', false);
                 return;
             }
 
             if (!operation) {
                 resultDiv.textContent = 'Error: Please choose an operation';
                 resultDiv.className = 'result error';
+                addToHistory(num1, '?', num2, 'Error: No operation selected', false);
                 return;
             }
 
@@ -386,10 +611,14 @@
                 const formattedResult = Number.isInteger(result) ? result : result.toFixed(4);
                 resultDiv.textContent = `${num1} ${operation} ${num2} = ${formattedResult}`;
                 resultDiv.className = 'result success';
+                
+                // Add to history
+                addToHistory(num1, operation, num2, formattedResult, true);
 
             } catch (error) {
                 resultDiv.textContent = `Error: ${error.message}`;
                 resultDiv.className = 'result error';
+                addToHistory(num1, operation, num2, `Error: ${error.message}`, false);
             }
         }
 
@@ -406,6 +635,12 @@
             document.getElementById('operation').value = '';
             document.getElementById('result').textContent = 'Enter numbers and choose an operation to calculate';
             document.getElementById('result').className = 'result';
+        }
+
+        function clearHistory() {
+            calculationHistory = [];
+            updateHistoryDisplay();
+            updateStatistics();
         }
 
         // Allow Enter key to calculate
