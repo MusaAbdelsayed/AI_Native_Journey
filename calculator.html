@@ -26,7 +26,7 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 700px;
             width: 90%;
             text-align: center;
             backdrop-filter: blur(10px);
@@ -125,13 +125,6 @@
         .calculate-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .calculate-btn:disabled {
-            background: #cbd5e0;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
         .result {
@@ -363,6 +356,37 @@
             font-size: 0.9em;
             color: #718096;
         }
+
+        .session-info {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .help-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .help-section h4 {
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .help-text {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -370,12 +394,12 @@
         <div class="header">
             <div class="emoji">🧮✨</div>
             <h1 class="title">Enhanced Calculator</h1>
-            <p class="subtitle">Basic Arithmetic Operations with History</p>
+            <p class="subtitle">Basic Arithmetic Operations with History & Advanced Features</p>
         </div>
 
         <div class="calculator">
             <div class="input-group">
-                <input type="number" id="num1" class="number-input" placeholder="First number" step="any">
+                <input type="text" id="num1" class="number-input" placeholder="First number" step="any">
                 <select id="operation" class="operation-select">
                     <option value="">Choose operation</option>
                     <option value="+">➕ Addition (+)</option>
@@ -385,7 +409,7 @@
                     <option value="%">📊 Modulo (%)</option>
                     <option value="**">💪 Power (**)</option>
                 </select>
-                <input type="number" id="num2" class="number-input" placeholder="Second number" step="any">
+                <input type="text" id="num2" class="number-input" placeholder="Second number" step="any">
             </div>
 
             <button id="calculateBtn" class="calculate-btn" onclick="calculate()">Calculate 🚀</button>
@@ -393,6 +417,13 @@
 
             <div id="result" class="result">
                 Enter numbers and choose an operation to calculate
+            </div>
+
+            <div class="session-info" id="sessionInfo">
+                <strong>Session Info:</strong><br>
+                Timestamp: <span id="currentTime"></span><br>
+                Calculator Version: Enhanced Calculator with History<br>
+                Features: 6 operations, history tracking, comma handling
             </div>
 
             <div class="history-section">
@@ -435,12 +466,25 @@
                     <button class="quick-btn" onclick="quickCalc(100, '/', 4)">100 ÷ 4</button>
                     <button class="quick-btn" onclick="quickCalc(17, '%', 5)">17 % 5</button>
                     <button class="quick-btn" onclick="quickCalc(2, '**', 8)">2^8</button>
+                    <button class="quick-btn" onclick="quickCalc(1000000, '+', 500000)">1M + 500K</button>
+                    <button class="quick-btn" onclick="quickCalc(1000, '*', 1000)">1K × 1K</button>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4>💡 Tips & Features</h4>
+                <div class="help-text">
+                    • <strong>Comma Support:</strong> Enter large numbers with commas (e.g., 1,000,000)<br>
+                    • <strong>History:</strong> All calculations are automatically saved<br>
+                    • <strong>Statistics:</strong> View session statistics and most used operations<br>
+                    • <strong>Error Handling:</strong> Division by zero and invalid input protection<br>
+                    • <strong>Keyboard:</strong> Press Enter to calculate instantly
                 </div>
             </div>
         </div>
 
         <div class="features">
-            <h3>🎯 Calculator Features</h3>
+            <h3>🎯 Complete Feature List</h3>
             <ul class="feature-list">
                 <li>Basic arithmetic operations (+, -, *, /, %, **)</li>
                 <li>Input validation and error handling</li>
@@ -452,6 +496,10 @@
                 <li>Calculation history tracking</li>
                 <li>Session statistics and summary</li>
                 <li>Automatic comma removal for large numbers</li>
+                <li>Session information display</li>
+                <li>Helpful tips and guidance</li>
+                <li>Responsive design for all devices</li>
+                <li>Professional styling and animations</li>
             </ul>
         </div>
 
@@ -472,6 +520,10 @@
         function getCurrentTime() {
             const now = new Date();
             return now.toLocaleString();
+        }
+
+        function updateSessionInfo() {
+            document.getElementById('currentTime').textContent = getCurrentTime();
         }
 
         function addToHistory(num1, operation, num2, result, success) {
@@ -665,6 +717,10 @@
                 container.style.opacity = '1';
                 container.style.transform = 'translateY(0)';
             }, 100);
+
+            // Update session info
+            updateSessionInfo();
+            setInterval(updateSessionInfo, 1000);
         });
     </script>
 </body>
