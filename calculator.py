@@ -29,33 +29,33 @@ def clear_screen() -> None:
 def print_header() -> None:
     """Display the calculator header."""
     print(f"{Colors.BOLD}{Colors.HEADER}{'='*50}{Colors.END}")
-    print(f"{Colors.BOLD}{Colors.CYAN}Enhanced Simple Command-Line Calculator{Colors.END}")
-    print(f"{Colors.BLUE}Basic Arithmetic Operations with History{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.CYAN}🧮 Super Smart Calculator{Colors.END}")
+    print(f"{Colors.BLUE}✨ Math made fun and easy!{Colors.END}")
     print(f"{Colors.HEADER}{'='*50}{Colors.END}\n")
 
 def print_operations() -> None:
-    """Display available operations."""
+    """Display available operations with clear, fun instructions."""
     operations = [
-        "➕ Addition (+)",
-        "➖ Subtraction (-)", 
-        "✖️  Multiplication (*)",
-        "➗ Division (/)",
-        "📊 Modulo (%)",
-        "💪 Power (**)",
-        "📋 View History (h)",
-        "🔢 Exit (q)"
+        "➕ Add numbers together (+)",
+        "➖ Subtract second number from first (-)", 
+        "✖️  Multiply two numbers (*)",
+        "➗ Divide first number by second (/)",
+        "📊 Get remainder after division (%)",
+        "💪 Raise first number to power of second (**)",
+        "📋 Show your calculation history",
+        "🔢 Exit calculator"
     ]
     
-    print(f"{Colors.BOLD}{Colors.GREEN}Available Operations:{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.GREEN}🎯 What would you like to do?{Colors.END}")
     for i, op in enumerate(operations, 1):
         print(f"  {i}. {op}")
-    print()
+    print(f"{Colors.YELLOW}💡 Tip: Type 'h' anytime to see your history, or 'q' to quit!{Colors.END}\n")
 
 def get_number(prompt: str) -> Union[float, None]:
     """Get and validate a number from user input with automatic comma removal."""
     while True:
         try:
-            print(f"{Colors.CYAN}{prompt}{Colors.END}", end="")
+            print(f"{Colors.CYAN}🔢 {prompt}{Colors.END}", end="")
             user_input = input().strip().lower()
             
             if user_input == 'q':
@@ -68,16 +68,16 @@ def get_number(prompt: str) -> Union[float, None]:
             return number
             
         except ValueError:
-            print(f"{Colors.RED}Error: Please enter a valid number or 'q' to quit.{Colors.END}")
+            print(f"{Colors.RED}❌ Oops! That's not a valid number. Try again or type 'q' to quit.{Colors.END}")
         except KeyboardInterrupt:
-            print(f"\n{Colors.YELLOW}Calculator terminated by user.{Colors.END}")
+            print(f"\n{Colors.YELLOW}👋 Calculator closed by user.{Colors.END}")
             sys.exit(0)
 
 def get_operation() -> Union[str, None]:
     """Get and validate the operation choice from user."""
     while True:
         try:
-            print(f"{Colors.CYAN}Choose operation (1-8): {Colors.END}", end="")
+            print(f"{Colors.CYAN}⚡ Pick your operation (1-8): {Colors.END}", end="")
             choice = input().strip().lower()
             
             if choice == 'q':
@@ -93,10 +93,10 @@ def get_operation() -> Union[str, None]:
             if choice in operations:
                 return operations[choice]
             else:
-                print(f"{Colors.RED}Error: Please enter a number between 1-8, 'h' for history, or 'q' to quit.{Colors.END}")
+                print(f"{Colors.RED}❌ Please pick a number from 1-8, type 'h' for history, or 'q' to quit.{Colors.END}")
                 
         except KeyboardInterrupt:
-            print(f"\n{Colors.YELLOW}Calculator terminated by user.{Colors.END}")
+            print(f"\n{Colors.YELLOW}👋 Calculator closed by user.{Colors.END}")
             sys.exit(0)
 
 def calculate(num1: float, num2: float, operation: str) -> Tuple[bool, Union[float, str]]:
@@ -143,22 +143,23 @@ def print_result(num1: float, num2: float, operation: str, success: bool, result
     print(f"\n{Colors.HEADER}{'='*40}{Colors.END}")
     
     if success:
-        print(f"{Colors.BOLD}{Colors.GREEN}Calculation Result:{Colors.END}")
-        print(f"{Colors.CYAN}{num1} {operation} {num2} = {result}{Colors.END}")
+        print(f"{Colors.BOLD}{Colors.GREEN}🎉 Your Result:{Colors.END}")
+        print(f"{Colors.CYAN}📊 {num1} {operation} {num2} = {result}{Colors.END}")
+        print(f"{Colors.GREEN}✅ Calculation saved to history!{Colors.END}")
     else:
-        print(f"{Colors.BOLD}{Colors.RED}Calculation Error:{Colors.END}")
-        print(f"{Colors.RED}{result}{Colors.END}")
+        print(f"{Colors.BOLD}{Colors.RED}❌ Calculation Error:{Colors.END}")
+        print(f"{Colors.RED}🚫 {result}{Colors.END}")
     
     print(f"{Colors.HEADER}{'='*40}{Colors.END}\n")
 
 def print_history(history: List[Dict]) -> None:
     """Display the calculation history."""
     if not history:
-        print(f"{Colors.YELLOW}No calculations in history yet.{Colors.END}\n")
+        print(f"{Colors.YELLOW}📝 No calculations in your history yet. Let's do some math!{Colors.END}\n")
         return
     
     print(f"\n{Colors.BOLD}{Colors.HEADER}{'='*60}{Colors.END}")
-    print(f"{Colors.BOLD}{Colors.BLUE}📋 CALCULATION HISTORY{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.BLUE}📋 YOUR CALCULATION HISTORY{Colors.END}")
     print(f"{Colors.HEADER}{'='*60}{Colors.END}")
     
     for i, calc in enumerate(history, 1):
@@ -170,34 +171,34 @@ def print_history(history: List[Dict]) -> None:
         success = calc['success']
         
         if success:
-            print(f"{Colors.GREEN}{i:2d}. [{timestamp}] {num1} {operation} {num2} = {result}{Colors.END}")
+            print(f"{Colors.GREEN}✅ {i:2d}. [{timestamp}] {num1} {operation} {num2} = {result}{Colors.END}")
         else:
-            print(f"{Colors.RED}{i:2d}. [{timestamp}] {num1} {operation} {num2} = {result}{Colors.END}")
+            print(f"{Colors.RED}❌ {i:2d}. [{timestamp}] {num1} {operation} {num2} = {result}{Colors.END}")
     
     print(f"{Colors.HEADER}{'='*60}{Colors.END}")
-    print(f"{Colors.CYAN}Total calculations: {len(history)}{Colors.END}\n")
+    print(f"{Colors.CYAN}📊 Total calculations: {len(history)}{Colors.END}\n")
 
 def print_session_summary(history: List[Dict]) -> None:
     """Display session summary with statistics."""
     if not history:
-        print(f"{Colors.YELLOW}No calculations performed in this session.{Colors.END}")
+        print(f"{Colors.YELLOW}📝 No calculations performed in this session.{Colors.END}")
         return
     
     successful_calcs = [calc for calc in history if calc['success']]
     failed_calcs = [calc for calc in history if not calc['success']]
     
     print(f"\n{Colors.BOLD}{Colors.HEADER}{'='*50}{Colors.END}")
-    print(f"{Colors.BOLD}{Colors.BLUE}📊 SESSION SUMMARY{Colors.END}")
+    print(f"{Colors.BOLD}{Colors.BLUE}📊 YOUR SESSION SUMMARY{Colors.END}")
     print(f"{Colors.HEADER}{'='*50}{Colors.END}")
-    print(f"{Colors.CYAN}Total calculations: {len(history)}{Colors.END}")
-    print(f"{Colors.GREEN}Successful: {len(successful_calcs)}{Colors.END}")
-    print(f"{Colors.RED}Failed: {len(failed_calcs)}{Colors.END}")
+    print(f"{Colors.CYAN}🔢 Total calculations: {len(history)}{Colors.END}")
+    print(f"{Colors.GREEN}✅ Successful: {len(successful_calcs)}{Colors.END}")
+    print(f"{Colors.RED}❌ Failed: {len(failed_calcs)}{Colors.END}")
     
     if successful_calcs:
         # Find most used operation
         operations = [calc['operation'] for calc in successful_calcs]
         most_used = max(set(operations), key=operations.count)
-        print(f"{Colors.YELLOW}Most used operation: {most_used}{Colors.END}")
+        print(f"{Colors.YELLOW}⭐ Your favorite operation: {most_used}{Colors.END}")
     
     print(f"{Colors.HEADER}{'='*50}{Colors.END}\n")
 
@@ -260,7 +261,7 @@ def main() -> None:
             add_to_history(calculation_history, num1, operation, num2, result, success)
             
             # Ask if user wants to continue
-            print(f"{Colors.YELLOW}Press Enter to continue, 'h' for history, or 'q' to quit...{Colors.END}")
+            print(f"{Colors.YELLOW}🔄 Press Enter to continue, 'h' for history, or 'q' to quit...{Colors.END}")
             user_choice = input().strip().lower()
             
             if user_choice == 'q':
@@ -274,10 +275,10 @@ def main() -> None:
         
         # Display session summary
         print_session_summary(calculation_history)
-        print(f"\n{Colors.GREEN}Thank you for using the Enhanced Calculator!{Colors.END}")
+        print(f"\n{Colors.GREEN}🎉 Thanks for using the Enhanced Calculator! Come back soon!{Colors.END}")
         
     except Exception as e:
-        print(f"{Colors.RED}An unexpected error occurred: {e}{Colors.END}")
+        print(f"{Colors.RED}❌ An unexpected error occurred: {e}{Colors.END}")
         sys.exit(1)
 
 if __name__ == "__main__":
